@@ -86,11 +86,12 @@ export class FilterPipe implements PipeTransform {
    * Filter value by $or
    */
   private filterByOr(filter: any[]): (value: any) => boolean {
+    var _this = this;
     return (value: any) => {
       const length = filter.length;
 
       const arrayComparison = (i) => value.indexOf(filter[i]) !== -1;
-      const otherComparison = (i) => value === filter[i];
+      const otherComparison = (i) => _this.isMatching(filter[i],value) ;
       const comparison = Array.isArray(value) ? arrayComparison : otherComparison;
 
       for (let i = 0; i < length; i++) {
