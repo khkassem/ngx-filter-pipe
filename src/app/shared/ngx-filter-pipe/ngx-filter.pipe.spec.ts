@@ -267,6 +267,17 @@ describe('Pipe: FilterPipe', () => {
     expect(pipe.transform(objects, { languages: { $or: ['English'] }, age: 27 })).toEqual([]);
   });
 
+  it('should filter by using $or operator and nested Objects', () => {
+    const objects = [
+      { age: 30, name: 'Mario', address : {country:'Lebanon', city:'Beirut'} },
+      { age: 31, name: 'Mario', address : {country:'France', city:'Paris'} },
+      { age: 27, name: 'Mike', address : {country: 'France', city:'Toulouse'} }
+    ];
+
+    expect(pipe.transform(objects, { $or: {name : 'Mike'}})).toEqual([objects[2]]);
+    expect(pipe.transform(objects, { $or: [{name : 'Mike'}, {address:{city:'Bei'}}]})).toEqual([objects[0],objects[2]]);
+  });
+
   it('should filter values with space', () => {
     const values = [
       'John Writer'
